@@ -4,7 +4,7 @@ import User from '#models/user'
 
 export default class AuthController {
   public async register({ request, response, auth }: HttpContext) {
-    const data = request.only(['email', 'password'])
+    const data = request.only(['email', 'password', 'fullName'])
 
     const user = await User.create(data)
     await auth.use('web').login(user)
