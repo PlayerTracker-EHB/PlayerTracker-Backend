@@ -11,6 +11,7 @@ const AuthController = () => import('#controllers/auth_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 import PlayersController from '#controllers/players_controller'
+import UploadsController from '#controllers/UploadController'
 
 
 router.post('/register', [AuthController, 'register'])
@@ -29,6 +30,10 @@ router.group(() => {
   router.post("/players", [PlayersController, 'create'])
   router.put("/players/:playerId", [PlayersController, "update"])
   router.delete("/players/:playerId", [PlayersController, 'delete'])
+
+
+  router.post("/upload-chunk", [UploadsController, 'uploadChunk'])
+  router.post("/finalize-upload", [UploadsController, 'finalizeUpload'])
 })
   .prefix("/admin")
   .use([
