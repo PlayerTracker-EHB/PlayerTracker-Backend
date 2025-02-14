@@ -8,7 +8,6 @@ export default class extends BaseSchema {
       table.increments('player_id').primary()
       table.string('first_name').notNullable()
       table.string('last_name').notNullable()
-      table.string('team').notNullable()
       table.integer('team_id').unsigned().references('teams.team_id').onDelete('CASCADE')
 
       table.timestamp('created_at').notNullable()

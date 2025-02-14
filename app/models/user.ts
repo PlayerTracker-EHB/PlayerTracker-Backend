@@ -30,7 +30,10 @@ export default class User extends compose(BaseModel, AuthFinder) {
   @column()
   declare teamId: number | null
 
-  @belongsTo(() => Team)
+  @belongsTo(() => Team, {
+    foreignKey: 'teamId', // the column on "users" table
+    localKey: 'teamId',   // the column on "teams" table (the primary key is "teamId")
+  })
   declare team: BelongsTo<typeof Team>
 
   @column.dateTime({ autoCreate: true })

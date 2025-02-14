@@ -14,9 +14,6 @@ export default class Player extends BaseModel {
   declare lastName: string
 
   @column()
-  declare team: string
-
-  @column()
   declare teamId: number
 
   @belongsTo(() => Team)

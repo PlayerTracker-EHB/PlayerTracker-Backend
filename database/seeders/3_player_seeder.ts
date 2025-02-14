@@ -7,13 +7,11 @@ export default class PlayerSeeder extends BaseSeeder {
       {
         firstName: 'Leo',
         lastName: 'Messi',
-        team: 'Futsal Warriors',
         teamId: 1,
       },
       {
         firstName: 'Cristiano',
         lastName: 'Ronaldo',
-        team: 'Futsal Titans',
         teamId: 2,
       },
     ])

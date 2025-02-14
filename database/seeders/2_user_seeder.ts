@@ -9,7 +9,7 @@ export default class UserSeeder extends BaseSeeder {
         email: 'admin@teamtracker.com',
         password: 'admin123',
         isAdmin: true,
-        teamId: null,
+        teamId: 1,
       },
       {
         fullName: 'John Coach',
@@ -23,7 +23,7 @@ export default class UserSeeder extends BaseSeeder {
         email: 'player@teamtracker.com',
         password: 'player123',
         isAdmin: false,
-        teamId: 1,
+        teamId: 2,
       },
     ])
   }

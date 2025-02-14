@@ -33,6 +33,7 @@ export default class AuthController {
   }
 
   public async me({ auth, response }: HttpContext) {
+    await auth.user?.load('team')
     return response.ok({ user: auth.user })
   }
 }
