@@ -47,7 +47,6 @@ export default class UploadsController {
 
     try {
       await this.uploadService.handleChunkUpload(chunk, name, Number(chunkIndex));
-      console.log("Chunk uploaded successfully");
       return response.ok({ message: 'Chunk uploaded successfully' });
     } catch (error) {
       console.error("Error during chunk upload:", error);
