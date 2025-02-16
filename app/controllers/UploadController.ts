@@ -10,7 +10,6 @@ const gameSchema = vine.compile(
     totalChunks: vine.number(),
     atHome: vine.boolean(),
     adversaryName: vine.string(),
-    teamId: vine.number()
   })
 )
 
@@ -57,17 +56,23 @@ export default class UploadsController {
     }
   }
 
-  async finalizeUpload({ request, response }: HttpContext) {
+  async finalizeUpload({ request, response, auth }: HttpContext) {
     console.log("Starting finalizeUpload method");
 
-    const data = request.only(["name", "totalChunks", "atHome", "adversaryName", "teamId"]);
+    const data = request.only(["name", "totalChunks", "atHome", "adversaryName"]);
 
     try {
       const payload = await gameSchema.validate(data);
       console.log("Validated payload:", payload);
 
+      const teamId = auth.user?.teamId
+
+      if (!teamId) {
+        return response.unauthorized({ error: 'Unauthorized' });
+      }
+
       const game = new Game();
-      game.teamId = payload.teamId;
+      game.teamId = teamId;
       game.atHome = payload.atHome;
       game.adversaryName = payload.adversaryName;
 
