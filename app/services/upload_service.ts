@@ -3,6 +3,7 @@ import app from '@adonisjs/core/services/app'
 import fs from 'node:fs'
 import { promisify } from 'node:util'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
+import minio_service from './minio_service.js'
 
 const unlink = promisify(fs.unlink)
 
@@ -94,8 +95,7 @@ export class UploadService {
   }
 
   private sanitizeFilename(filename: string): string {
-    // Replace illegal characters with hyphen
-    const sanitized = filename.replace(/[^A-Za-z0-9\-_\/\!\.\s]/g, '-');
+    const sanitized = filename.replace(/[^A-Za-z0-9\-_\/\!\.]/g, '-').replace(/\s+/g, '');
     return sanitized;
   }
 
@@ -105,13 +105,16 @@ export class UploadService {
 
     // Sanitize the filename before uploading
     const sanitizedFilename = this.sanitizeFilename(filename);
+    console.log(`Sanitized filename: ${sanitizedFilename}`);
 
     await disk.put(`videos/${sanitizedFilename}`, finalFileContent, {
       contentType: 'video/mp4',
     });
 
     const url = await drive.use().getUrl(`videos/${sanitizedFilename}`);
-    console.log(`Final file uploaded to: ${url}`);
+
+
+    minio_service.uploadFile(sanitizedFilename)
     return url;
   }
 
