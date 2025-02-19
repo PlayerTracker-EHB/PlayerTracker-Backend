@@ -22,7 +22,6 @@ class MinioService {
   public async uploadFile(destinationObject: string): Promise<void> {
     const bucket = minio.bucketName
     const filePath = app.makePath("storage/videos", destinationObject)
-    console.log(`FILE PATH: ${filePath}`)
 
     // Check if the bucket exists
     const exists = await this.client.bucketExists(bucket)
@@ -40,6 +39,15 @@ class MinioService {
     // Upload the file to the bucket
     await this.client.fPutObject(bucket, destinationObject, filePath, metaData)
     console.log(`File ${filePath} uploaded as object ${destinationObject} in bucket ${bucket}`)
+  }
+
+  // Download video from MinIO
+  public async downloadFile(sourceObject: string): Promise<void> {
+    const bucket = minio.bucketName
+    const filePath = app.makePath("storage/statsvideos", sourceObject)
+
+    this.client.fGetObject(bucket, sourceObject, filePath)
+
   }
 }
 
