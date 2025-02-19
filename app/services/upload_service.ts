@@ -3,11 +3,16 @@ import app from '@adonisjs/core/services/app'
 import fs from 'node:fs'
 import { promisify } from 'node:util'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
-import minio_service from './minio_service.js'
+import { MinioService } from './minio_service.js'
 
 const unlink = promisify(fs.unlink)
 
 export class UploadService {
+
+  constructor(
+    protected minioService: MinioService
+  ) { }
+
   private getTempChunkPath(filename: string, chunkIndex: number) {
     return app.makePath('tmp/chunks', `${filename}_${chunkIndex}`)
   }
@@ -114,7 +119,7 @@ export class UploadService {
     const url = await drive.use().getUrl(`videos/${sanitizedFilename}`);
 
 
-    minio_service.uploadFile(sanitizedFilename)
+    this.minioService.uploadFile(sanitizedFilename)
     return url;
   }
 

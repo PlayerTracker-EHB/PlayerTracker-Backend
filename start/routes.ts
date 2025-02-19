@@ -7,18 +7,21 @@
 |
 */
 const AuthController = () => import('#controllers/auth_controller')
+const PlayersController = () => import('#controllers/players_controller')
+const UploadsController = () => import('#controllers/upload_controller')
+const AIController = () => import('#controllers/ai_controller')
 
 import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
-import PlayersController from '#controllers/players_controller'
-import UploadsController from '#controllers/UploadController'
 
 
+// Auth route
 router.post('/register', [AuthController, 'register'])
 router.post('/login', [AuthController, 'login'])
 router.post('/logout', [AuthController, 'logout'])
 router.get('/me', [AuthController, 'me']).use(middleware.auth())
 
+// Admin routes
 router.group(() => {
   router.get("/", () => {
     return "Admin page"
@@ -37,3 +40,8 @@ router.group(() => {
     middleware.auth(),
     middleware.admin()
   ])
+
+
+
+//Ai routes
+router.post("/videoname", [AIController, 'handle'])

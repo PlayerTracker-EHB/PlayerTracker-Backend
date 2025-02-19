@@ -4,7 +4,7 @@ import minio from '#config/minio'
 import app from '@adonisjs/core/services/app'
 
 
-class MinioService {
+export class MinioService {
   private client: Minio.Client
 
   constructor() {
