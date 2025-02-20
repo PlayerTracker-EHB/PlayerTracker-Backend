@@ -3,7 +3,6 @@ import * as Minio from 'minio'
 import minio from '#config/minio'
 import app from '@adonisjs/core/services/app'
 
-
 export class MinioService {
   private client: Minio.Client
 
@@ -38,6 +37,7 @@ export class MinioService {
 
     // Upload the file to the bucket
     await this.client.fPutObject(bucket, destinationObject, filePath, metaData)
+    this.sendFileData(destinationObject)
     console.log(`File ${filePath} uploaded as object ${destinationObject} in bucket ${bucket}`)
   }
 
@@ -49,7 +49,37 @@ export class MinioService {
     this.client.fGetObject(bucket, sourceObject, filePath)
 
   }
+
+
+
+  private async sendFileData(filename: string): Promise<void> {
+    // Create a unique filename by appending the current timestamp
+    const uniqueFileName = Date.now().toString() + filename;
+
+    const url = new URL('http://localhost:3333/stats');
+    url.searchParams.append('filename', uniqueFileName);
+
+    try {
+      const response = await fetch(url.toString(), {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error when sending to ai! status: ${response.status}`);
+      }
+
+      const responseData = await response.json(); // Parse the JSON response
+      console.log('Success:', responseData); // Handle the success response
+    } catch (error) {
+      console.error('Error:', error); // Handle errors
+    }
+  }
+
 }
+
 
 export default new MinioService()
 
