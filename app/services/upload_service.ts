@@ -57,14 +57,13 @@ export class UploadService {
       console.log(`All chunks combined successfully into: ${finalFilePath}`);
 
       // Upload to storage
-      const url = await this.uploadFinalFile(filename, finalFilePath);
-      console.log(`File uploaded successfully to: ${url}`);
+      const array = await this.uploadFinalFile(filename, finalFilePath);
 
       // Cleanup
       await this.cleanup(finalFilePath);
       console.log(`Temporary file cleaned up: ${finalFilePath}`);
 
-      return url;
+      return array;
     } catch (error) {
       console.error("Error during file combination or upload:", error);
       // Ensure cleanup on error
@@ -121,8 +120,7 @@ export class UploadService {
     const url = await drive.use().getUrl(`videos/${sanitizedFilename}`);
 
 
-    this.minioService.uploadFile(sanitizedFilename)
-    return url;
+    return [url, sanitizedFilename];
   }
 
   private async cleanup(finalFilePath: string) {

@@ -4,6 +4,7 @@ import Game from '#models/game'
 import vine from '@vinejs/vine'
 import { inject } from '@adonisjs/core'
 import { GameService } from '#services/game_service'
+import { MinioService } from '#services/minio_service'
 
 const gameSchema = vine.compile(
   vine.object({
@@ -18,7 +19,8 @@ const gameSchema = vine.compile(
 export default class UploadsController {
   constructor(
     protected uploadService: UploadService,
-    protected gameService: GameService
+    protected gameService: GameService,
+    protected minioService: MinioService
   ) { }
 
   async uploadChunk({ request, response }: HttpContext) {
@@ -79,9 +81,14 @@ export default class UploadsController {
       game.atHome = payload.atHome;
       game.adversaryName = payload.adversaryName;
 
-      game.videoPath = await this.uploadService.combineAndStoreFile(payload.name, payload.totalChunks);
+      const array = await this.uploadService.combineAndStoreFile(payload.name, payload.totalChunks);
 
-      this.gameService.create(game)
+      game.videoPath = array[0];
+      const destinationObject = array[1]
+
+      const gameId = await this.gameService.create(game)
+
+      this.minioService.uploadFile(destinationObject, gameId)
       return response.ok({ message: 'Upload finalized successfully' });
     } catch (error) {
       console.error("Error during finalization:", error);

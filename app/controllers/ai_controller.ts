@@ -1,25 +1,42 @@
-import { MinioService } from '#services/minio_service'
+import GameStats from '#models/game_stats';
+import { StatsService } from '#services/stats_service';
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import vine from '@vinejs/vine'
 
-const fileNameSchema = vine.compile(
+const gameSchema = vine.compile(
   vine.object({
-    fileName: vine.string(),
+    gameId: vine.number(),
+    videoName: vine.string(),
+    possessionTeamA: vine.string(),
+    possessionTeamB: vine.string(),
+    heatmapTeamA: vine.string(),
+    heatmapTeamB: vine.string(),
   })
 )
 
 @inject()
 export default class AIController {
-  constructor(protected minioService: MinioService) { }
-  async handle({ request, response }: HttpContext) {
-    const fileName = request.only(["fileName"])
-    console.log("fileName:", fileName)
-    const payload = await fileNameSchema.validate(fileName)
+  constructor(protected statsService: StatsService) { }
 
-    this.minioService.downloadFile(payload.fileName)
+  public async handle({ request, response }: HttpContext) {
+    const data = request.only(["gameId", "videoName", "possessionTeamA", "possessionTeamB", "heatmapTeamA", "heatmapTeamB"]);
+
+    const payload = await gameSchema.validate(data);
+
+    const gameStats = new GameStats();
+
+    gameStats.gameId = payload.gameId;
+    gameStats.videoName = payload.videoName;
+    gameStats.possessionTeamA = payload.possessionTeamA;
+    gameStats.possessionTeamB = payload.possessionTeamB;
+    gameStats.heatmapTeamA = payload.heatmapTeamA;
+    gameStats.heatmapTeamB = payload.heatmapTeamB;
+
+    this.statsService.handleStats(gameStats)
 
 
-    response.ok({ message: "fileName received successfully" })
+    response.ok("Stats received successfully")
   }
+
 }

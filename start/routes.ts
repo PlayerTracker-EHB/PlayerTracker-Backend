@@ -53,4 +53,6 @@ router.group(() => {
 
 
 //Ai routes
-router.post("/videoname", [AIController, 'handle'])
+router.group(() => {
+  router.post("/", [AIController, 'handle'])
+}).prefix("/stats")

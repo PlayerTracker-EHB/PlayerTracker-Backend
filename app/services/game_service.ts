@@ -9,8 +9,10 @@ export class GameService {
   }
 
   async create(game: any) {
-    return await Game.create(game)
+    const createdGame = await Game.create(game)
+    return createdGame.gameId
   }
+
 
 }
 

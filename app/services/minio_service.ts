@@ -18,7 +18,7 @@ export class MinioService {
   }
 
   // Upload video to MinIO
-  public async uploadFile(destinationObject: string): Promise<void> {
+  public async uploadFile(destinationObject: string, matchId: number): Promise<void> {
     const bucket = minio.bucketName
     const filePath = app.makePath("storage/videos", destinationObject)
 
@@ -37,7 +37,7 @@ export class MinioService {
 
     // Upload the file to the bucket
     await this.client.fPutObject(bucket, destinationObject, filePath, metaData)
-    this.sendFileData(destinationObject)
+    this.sendFileData(destinationObject, matchId)
     console.log(`File ${filePath} uploaded as object ${destinationObject} in bucket ${bucket}`)
   }
 
@@ -52,19 +52,26 @@ export class MinioService {
 
 
 
-  private async sendFileData(filename: string): Promise<void> {
-    // Create a unique filename by appending the current timestamp
+  private async sendFileData(filename: string, gameId: number): Promise<void> {
     const uniqueFileName = Date.now().toString() + filename;
 
-    const url = new URL('http://localhost:3333/stats');
-    url.searchParams.append('filename', uniqueFileName);
+    const url = new URL('http://localhost:3333/upload');
+
+    console.log("url", url)
+    console.log("filename", uniqueFileName)
+    console.log("matchId", gameId)
 
     try {
       const response = await fetch(url.toString(), {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-        }
+        },
+        body: JSON.stringify({
+          fileName: uniqueFileName,
+          gameId: gameId
+        })
+
       });
 
       if (!response.ok) {
