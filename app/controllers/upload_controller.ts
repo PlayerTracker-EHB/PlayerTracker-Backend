@@ -1,8 +1,9 @@
 import { HttpContext } from '@adonisjs/core/http'
 import { UploadService } from '#services/upload_service'
-import { inject } from '@adonisjs/core'
 import Game from '#models/game'
 import vine from '@vinejs/vine'
+import { inject } from '@adonisjs/core'
+import { GameService } from '#services/game_service'
 
 const gameSchema = vine.compile(
   vine.object({
@@ -15,7 +16,10 @@ const gameSchema = vine.compile(
 
 @inject()
 export default class UploadsController {
-  constructor(protected uploadService: UploadService) { }
+  constructor(
+    protected uploadService: UploadService,
+    protected gameService: GameService
+  ) { }
 
   async uploadChunk({ request, response }: HttpContext) {
 
@@ -63,7 +67,6 @@ export default class UploadsController {
 
     try {
       const payload = await gameSchema.validate(data);
-      console.log("Validated payload:", payload);
 
       const teamId = auth.user?.teamId
 
@@ -76,12 +79,9 @@ export default class UploadsController {
       game.atHome = payload.atHome;
       game.adversaryName = payload.adversaryName;
 
-      console.log("Combining and storing file...");
       game.videoPath = await this.uploadService.combineAndStoreFile(payload.name, payload.totalChunks);
-      console.log("File combined and stored at:", game.videoPath);
 
-      await game.save();
-      console.log("Game object saved successfully");
+      this.gameService.create(game)
       return response.ok({ message: 'Upload finalized successfully' });
     } catch (error) {
       console.error("Error during finalization:", error);

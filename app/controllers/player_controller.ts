@@ -12,7 +12,7 @@ const playerSchema = vine.compile(
 )
 
 @inject()
-export default class PlayersController {
+export default class PlayerController {
   constructor(
     public playerService: PlayerService,
   ) { }

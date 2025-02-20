@@ -4,9 +4,11 @@ import fs from 'node:fs'
 import { promisify } from 'node:util'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
 import { MinioService } from './minio_service.js'
+import { inject } from '@adonisjs/core'
 
 const unlink = promisify(fs.unlink)
 
+@inject()
 export class UploadService {
 
   constructor(
