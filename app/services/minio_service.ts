@@ -56,11 +56,7 @@ export class MinioService {
   private async sendFileData(filename: string, gameId: number): Promise<void> {
     const uniqueFileName = Date.now().toString() + filename;
 
-    const url = new URL('http://localhost:3333/upload');
-
-    console.log("url", url)
-    console.log("filename", uniqueFileName)
-    console.log("matchId", gameId)
+    const url = new URL('http://localhost:8000/upload');
 
     try {
       const response = await fetch(url.toString(), {
