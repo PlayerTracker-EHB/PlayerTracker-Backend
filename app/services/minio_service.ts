@@ -2,7 +2,9 @@ import * as Minio from 'minio'
 
 import minio from '#config/minio'
 import app from '@adonisjs/core/services/app'
+import { inject } from '@adonisjs/core'
 
+@inject()
 export class MinioService {
   private client: Minio.Client
 
@@ -42,9 +44,8 @@ export class MinioService {
   }
 
   // Download video from MinIO
-  public async downloadFile(sourceObject: string): Promise<void> {
-    const bucket = minio.bucketName
-    const filePath = app.makePath("storage/statsvideos", sourceObject)
+  public async downloadFile(sourceObject: string, bucket: string): Promise<void> {
+    const filePath = app.makePath("storage", bucket, sourceObject)
 
     this.client.fGetObject(bucket, sourceObject, filePath)
 
