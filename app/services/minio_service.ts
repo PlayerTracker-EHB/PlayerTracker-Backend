@@ -51,8 +51,12 @@ export class MinioService {
     const filePath = app.makePath("storage", bucket, sourceObject)
     console.log("file path", filePath)
 
-    this.client.fGetObject(bucket, sourceObject, filePath)
-
+    try {
+      await this.client.fGetObject(bucket, sourceObject, filePath)
+      console.log(`File downloaded successfully: ${filePath}`)
+    } catch (error) {
+      console.error('Error downloading file:', error)
+    }
   }
 
 
