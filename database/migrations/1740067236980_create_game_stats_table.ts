@@ -8,8 +8,8 @@ export default class extends BaseSchema {
       table.increments('stat_id').primary()
       table.integer('game_id').unsigned().references('games.game_id').onDelete('CASCADE')
       table.string('video_name').notNullable()
-      table.string('possession_team_a').notNullable()
-      table.string('possession_team_b').notNullable()
+      table.float('possession_team_a').notNullable()
+      table.float('possession_team_b').notNullable()
       table.string('heatmap_team_a').notNullable()
       table.string('heatmap_team_b').notNullable()
 

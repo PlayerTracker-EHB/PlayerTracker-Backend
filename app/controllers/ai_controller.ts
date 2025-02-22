@@ -8,8 +8,8 @@ const gameSchema = vine.compile(
   vine.object({
     gameId: vine.number(),
     videoName: vine.string(),
-    possessionTeamA: vine.string(),
-    possessionTeamB: vine.string(),
+    possessionTeamA: vine.number(),
+    possessionTeamB: vine.number(),
     heatmapTeamA: vine.string(),
     heatmapTeamB: vine.string(),
   })

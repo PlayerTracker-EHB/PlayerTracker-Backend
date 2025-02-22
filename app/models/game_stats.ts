@@ -14,10 +14,10 @@ export default class GameStats extends BaseModel {
   declare videoName: string
 
   @column()
-  declare possessionTeamA: string
+  declare possessionTeamA: number
 
   @column()
-  declare possessionTeamB: string
+  declare possessionTeamB: number
 
   @column()
   declare heatmapTeamA: string
