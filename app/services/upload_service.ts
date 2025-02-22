@@ -102,7 +102,10 @@ export class UploadService {
 
   private sanitizeFilename(filename: string): string {
     const sanitized = filename.replace(/[^A-Za-z0-9\-_\/\!\.]/g, '-').replace(/\s+/g, '');
-    return sanitized;
+    //add timestamp at the beginning
+    const timestamp = Date.now().toString();
+    const sanitizedWithTimestamp = timestamp + sanitized;
+    return sanitizedWithTimestamp;
   }
 
   private async uploadFinalFile(filename: string, finalFilePath: string) {

@@ -54,7 +54,6 @@ export class MinioService {
 
 
   private async sendFileData(filename: string, gameId: number): Promise<void> {
-    const uniqueFileName = Date.now().toString() + filename;
 
     const url = new URL('http://ai-tracker:8000/upload');
 
@@ -65,7 +64,7 @@ export class MinioService {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          fileName: uniqueFileName,
+          fileName: filename,
           gameId: gameId
         })
 
