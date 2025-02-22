@@ -45,7 +45,11 @@ export class MinioService {
 
   // Download video from MinIO
   public async downloadFile(sourceObject: string, bucket: string): Promise<void> {
+    console.log("Downloading file from bucket")
+    console.log("object", sourceObject)
+    console.log("bucket", bucket)
     const filePath = app.makePath("storage", bucket, sourceObject)
+    console.log("file path", filePath)
 
     this.client.fGetObject(bucket, sourceObject, filePath)
 
