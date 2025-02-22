@@ -16,9 +16,13 @@ import router from '@adonisjs/core/services/router'
 import { middleware } from './kernel.js'
 
 
+
 // Auth route
 router.post('/register', [AuthController, 'register'])
 router.post('/login', [AuthController, 'login'])
+router.get('/', () => {
+  return "Hello world"
+})
 
 
 router.group(() => {
