@@ -9,7 +9,7 @@ export class StatsService {
   ) { }
   async handleStats(stats: GameStats) {
     stats.save()
-    const videoBucket = "proccessed-videos"
+    const videoBucket = "processed-videos"
     const heatmapBucket = "heatmaps"
     this.minioService.downloadFile(stats.videoName, videoBucket)
     this.minioService.downloadFile(stats.heatmapTeamA, heatmapBucket)
