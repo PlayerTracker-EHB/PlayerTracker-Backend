@@ -36,7 +36,10 @@ export default class AIController {
     this.statsService.handleStats(gameStats)
 
 
-    response.ok("Stats received successfully")
+
+    response.status(200).send({
+      message: "Game stats saved successfully"
+    });
   }
 
 }
