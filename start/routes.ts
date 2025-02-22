@@ -29,7 +29,6 @@ router.group(() => {
   router.get('/me', [AuthController, 'me'])
   router.post('/logout', [AuthController, 'logout'])
 
-
   router.get('/games', [GameController, 'index'])
 
 }).use(middleware.auth())

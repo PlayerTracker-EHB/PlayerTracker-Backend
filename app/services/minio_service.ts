@@ -56,7 +56,7 @@ export class MinioService {
   private async sendFileData(filename: string, gameId: number): Promise<void> {
     const uniqueFileName = Date.now().toString() + filename;
 
-    const url = new URL('http://localhost:8000/upload');
+    const url = new URL('http://ai-tracker:8000/upload');
 
     try {
       const response = await fetch(url.toString(), {
