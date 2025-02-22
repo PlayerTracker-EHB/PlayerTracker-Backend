@@ -72,7 +72,7 @@ export class MinioService {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error when sending to ai! status: ${response.status}`);
+        throw new Error(`HTTP error when sending to ai! status: ${response.statusText}`);
       }
 
       const responseData = await response.json(); // Parse the JSON response
