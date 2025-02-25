@@ -1,37 +1,4 @@
 services:
-  backend:
-    image: backend
-    container_name: backend
-    restart: unless-stopped
-    build:
-      context: ./backend
-      dockerfile: Dockerfile.backend
-      target: build
-    ports:
-      - ${PORT}:${PORT}
-      - 9229:9229
-    env_file:
-      - .env
-    volumes:
-      - ./:/home/node/app
-      - /home/node/app/node_modules
-    command: node ace serve --watch
-    depends_on:
-      - postgres
-    networks:
-      - network
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile.frontend
-    container_name: frontend
-    restart: always
-    ports:
-      - 3000:3000
-    networks:
-      - network
-
   postgres:
     image: postgres:latest
     restart: always
@@ -43,8 +10,6 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    networks:
-      - network
 
   minio:
     image: quay.io/minio/minio
@@ -58,12 +23,8 @@ services:
       MINIO_ROOT_USER: ROOTNAME
       MINIO_ROOT_PASSWORD: CHANGEME123
     command: server /data --console-address ":9001"
-    networks:
-      - network
 
 volumes:
   pgdata:
   minio-data:
 
-networks:
-  network:
