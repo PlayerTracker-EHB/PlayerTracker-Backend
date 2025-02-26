@@ -14,9 +14,6 @@ export default class Team extends BaseModel {
   @column()
   declare clubName: string
 
-  @column()
-  declare teamLogoUrl: string | null
-
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 
