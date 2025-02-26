@@ -3,35 +3,37 @@ import { inject } from "@adonisjs/core";
 import { HttpContext } from "@adonisjs/core/http";
 import vine from '@vinejs/vine'
 
-
 const teamSchema = vine.compile(
-    vine.object({
-        teamId: vine.number(),
-        coachName: vine.string(),
-        clubName: vine.string(),
-        teamLogoUrl: vine.string(),
-    })
-  )
+  vine.object({
+    teamId: vine.number(),
+    coachName: vine.string(),
+    clubName: vine.string(),
+  })
+)
 
 @inject()
-export default class TeamsController {
+export default class TeamController {
   constructor(
     public teamService: TeamService,
   ) { }
 
+  public async update({ request, response }: HttpContext) {
+    // Log the incoming request data
 
-public async update({ request, response}: HttpContext) {
+    const data = request.only(["teamId", "coachName", "clubName"]);
 
-    
+    // Validate the payload
+    try {
+      const payload = await teamSchema.validate(data);
 
-    const data = request.only(["teamId","coachName", "clubName", "teamLogoUrl"])
+      // Update the team
+      const team = await this.teamService.update(payload);
 
-    
-    const payload = await teamSchema.validate([data])
-
-    const team = await this.teamService.update(payload)
-
-    return response.ok({ team, message: "Team updated successfully" })
+      return response.ok({ team, message: "Team updated successfully" });
+    } catch (error) {
+      console.error("Validation error:", error);
+      return response.badRequest({ message: "Validation failed", error: error.message });
+    }
   }
-
 }
+
