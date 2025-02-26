@@ -9,6 +9,7 @@ export default class extends BaseSchema {
       table.integer('team_id').unsigned().references('teams.team_id').onDelete('CASCADE')
       table.boolean('at_home').notNullable().defaultTo(false)
       table.string('adversary_name').notNullable()
+      table.date('game_date').notNullable()
       table.text('video_path').nullable()
 
       table.timestamp('created_at').notNullable()

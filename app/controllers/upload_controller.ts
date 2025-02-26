@@ -12,6 +12,7 @@ const gameSchema = vine.compile(
     totalChunks: vine.number(),
     atHome: vine.boolean(),
     adversaryName: vine.string(),
+    gameDate: vine.date()
   })
 )
 
@@ -51,7 +52,9 @@ export default class UploadsController {
     }
 
     try {
+      console.log("I AM HERE")
       await this.uploadService.handleChunkUpload(chunk, name, Number(chunkIndex));
+      console.log("I AM HERE TOO")
       return response.ok({ message: 'Chunk uploaded successfully' });
     } catch (error) {
       console.error("Error during chunk upload:", error);
@@ -65,10 +68,12 @@ export default class UploadsController {
   async finalizeUpload({ request, response, auth }: HttpContext) {
     console.log("Starting finalizeUpload method");
 
-    const data = request.only(["name", "totalChunks", "atHome", "adversaryName"]);
+    const data = request.only(["name", "totalChunks", "atHome", "adversaryName", "gameDate"]);
+    console.log(data)
 
     try {
       const payload = await gameSchema.validate(data);
+      console.log(payload)
 
       const teamId = auth.user?.teamId
 
@@ -80,6 +85,7 @@ export default class UploadsController {
       game.teamId = teamId;
       game.atHome = payload.atHome;
       game.adversaryName = payload.adversaryName;
+      game.gameDate = payload.gameDate;
 
       const array = await this.uploadService.combineAndStoreFile(payload.name, payload.totalChunks);
 

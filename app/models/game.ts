@@ -17,6 +17,9 @@ export default class Game extends BaseModel {
   declare adversaryName: string
 
   @column()
+  declare gameDate: Date
+
+  @column()
   declare videoPath: string | null
 
   @belongsTo(() => Team)
