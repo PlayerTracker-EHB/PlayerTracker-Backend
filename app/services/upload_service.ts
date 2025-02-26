@@ -3,10 +3,18 @@ import app from '@adonisjs/core/services/app'
 import fs from 'node:fs'
 import { promisify } from 'node:util'
 import type { MultipartFile } from '@adonisjs/core/bodyparser'
+import { MinioService } from './minio_service.js'
+import { inject } from '@adonisjs/core'
 
 const unlink = promisify(fs.unlink)
 
+@inject()
 export class UploadService {
+
+  constructor(
+    protected minioService: MinioService
+  ) { }
+
   private getTempChunkPath(filename: string, chunkIndex: number) {
     return app.makePath('tmp/chunks', `${filename}_${chunkIndex}`)
   }
@@ -49,14 +57,13 @@ export class UploadService {
       console.log(`All chunks combined successfully into: ${finalFilePath}`);
 
       // Upload to storage
-      const url = await this.uploadFinalFile(filename, finalFilePath);
-      console.log(`File uploaded successfully to: ${url}`);
+      const array = await this.uploadFinalFile(filename, finalFilePath);
 
       // Cleanup
       await this.cleanup(finalFilePath);
       console.log(`Temporary file cleaned up: ${finalFilePath}`);
 
-      return url;
+      return array;
     } catch (error) {
       console.error("Error during file combination or upload:", error);
       // Ensure cleanup on error
@@ -94,9 +101,11 @@ export class UploadService {
   }
 
   private sanitizeFilename(filename: string): string {
-    // Replace illegal characters with hyphen
-    const sanitized = filename.replace(/[^A-Za-z0-9\-_\/\!\.\s]/g, '-');
-    return sanitized;
+    const sanitized = filename.replace(/[^A-Za-z0-9\-_\/\!\.]/g, '-').replace(/\s+/g, '');
+    //add timestamp at the beginning
+    const timestamp = Date.now().toString();
+    const sanitizedWithTimestamp = timestamp + sanitized;
+    return sanitizedWithTimestamp;
   }
 
   private async uploadFinalFile(filename: string, finalFilePath: string) {
@@ -105,14 +114,16 @@ export class UploadService {
 
     // Sanitize the filename before uploading
     const sanitizedFilename = this.sanitizeFilename(filename);
+    console.log(`Sanitized filename: ${sanitizedFilename}`);
 
     await disk.put(`videos/${sanitizedFilename}`, finalFileContent, {
       contentType: 'video/mp4',
     });
 
     const url = await drive.use().getUrl(`videos/${sanitizedFilename}`);
-    console.log(`Final file uploaded to: ${url}`);
-    return url;
+
+
+    return [url, sanitizedFilename];
   }
 
   private async cleanup(finalFilePath: string) {

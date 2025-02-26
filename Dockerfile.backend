@@ -1,0 +1,14 @@
+# Development stage
+FROM node:20.12.2-alpine3.18 AS development
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
+
+# Copy the rest of the application code
+COPY . .
+
+# Expose the port
+EXPOSE 3333
+
+# Start the development server
+CMD ["node", "ace", "serve", "--watch"]

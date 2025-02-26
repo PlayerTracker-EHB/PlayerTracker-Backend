@@ -41,5 +41,19 @@ export default await Env.create(new URL('../', import.meta.url), {
   | Variables for configuring the drive package
   |----------------------------------------------------------
   */
-  DRIVE_DISK: Env.schema.enum(['fs'] as const)
+  DRIVE_DISK: Env.schema.enum(['fs'] as const),
+
+
+  /*
+  |----------------------------------------------------------
+  | Variables for configuring minio package
+  |----------------------------------------------------------
+  */
+  MINIO_ENDPOINT: Env.schema.string(),
+  MINIO_PORT: Env.schema.number(),
+  MINIO_USESSL: Env.schema.boolean(),
+  MINIO_ACCESSKEY: Env.schema.string(),
+  MINIO_SECRETKEY: Env.schema.string(),
+  MINIO_BUCKETNAME: Env.schema.string(),
+
 })
