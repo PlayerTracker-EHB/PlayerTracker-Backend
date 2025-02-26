@@ -7,12 +7,10 @@ export default class TeamSeeder extends BaseSeeder {
       {
         coachName: 'Coach John',
         clubName: 'Futsal Warriors',
-        teamLogoUrl: 'https://example.com/futsal_warriors_logo.png',
       },
       {
         coachName: 'Coach Lisa',
         clubName: 'Futsal Titans',
-        teamLogoUrl: 'https://example.com/futsal_titans_logo.png',
       },
     ])
   }

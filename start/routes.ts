@@ -6,6 +6,7 @@
 | The routes file is used for defining the HTTP routes.
 |
 */
+const TeamController = () => import('#controllers/team_controller')
 const AuthController = () => import('#controllers/auth_controller')
 const PlayerController = () => import('#controllers/player_controller')
 const GameController = () => import('#controllers/game_controller')
@@ -43,6 +44,7 @@ router.group(() => {
   router.put("/players/:playerId", [PlayerController, "update"])
   router.delete("/players/:playerId", [PlayerController, 'delete'])
 
+  router.put("/team", [TeamController, 'update'])
 
   router.post("/upload-chunk", [UploadsController, 'uploadChunk'])
   router.post("/finalize-upload", [UploadsController, 'finalizeUpload'])
