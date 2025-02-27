@@ -22,6 +22,15 @@ export default class Game extends BaseModel {
   @column()
   declare videoPath: string | null
 
+  @column()
+  declare homeTeamScore: number
+
+  @column()
+  declare awayTeamScore: number
+
+  @column()
+  declare startsLeft: boolean
+
   @belongsTo(() => Team)
   declare teamData: BelongsTo<typeof Team>
 
