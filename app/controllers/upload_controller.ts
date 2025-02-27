@@ -12,7 +12,10 @@ const gameSchema = vine.compile(
     totalChunks: vine.number(),
     atHome: vine.boolean(),
     adversaryName: vine.string(),
-    gameDate: vine.date()
+    gameDate: vine.date(),
+    homeTeamScore: vine.number(),
+    awayTeamScore: vine.number(),
+    startsLeft: vine.boolean()
   })
 )
 
@@ -68,7 +71,7 @@ export default class UploadsController {
   async finalizeUpload({ request, response, auth }: HttpContext) {
     console.log("Starting finalizeUpload method");
 
-    const data = request.only(["name", "totalChunks", "atHome", "adversaryName", "gameDate"]);
+    const data = request.only(["name", "totalChunks", "atHome", "adversaryName", "gameDate","homeTeamScore","awayTeamScore","startsLeft"]);
     console.log(data)
 
     try {
@@ -86,6 +89,9 @@ export default class UploadsController {
       game.atHome = payload.atHome;
       game.adversaryName = payload.adversaryName;
       game.gameDate = payload.gameDate;
+      game.homeTeamScore = payload.homeTeamScore;
+      game.awayTeamScore = payload.awayTeamScore;
+      game.startsLeft = payload.startsLeft;
 
       const array = await this.uploadService.combineAndStoreFile(payload.name, payload.totalChunks);
 

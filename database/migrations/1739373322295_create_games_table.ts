@@ -11,6 +11,9 @@ export default class extends BaseSchema {
       table.string('adversary_name').notNullable()
       table.date('game_date').notNullable()
       table.text('video_path').nullable()
+      table.integer('home_team_score').nullable()
+      table.integer('away_team_score').nullable()
+      table.boolean('starts_left').nullable()
 
       table.timestamp('created_at').notNullable()
     })
