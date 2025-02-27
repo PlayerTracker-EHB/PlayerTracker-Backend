@@ -7,6 +7,12 @@ export class StatsService {
   constructor(
     protected minioService: MinioService
   ) { }
+
+  async getStats(gameId: number) {
+    const gameStats = await GameStats.findByOrFail("gameId", gameId)
+    return gameStats
+  }
+
   async handleStats(stats: GameStats) {
     stats.save()
     const videoBucket = "processed-videos"
