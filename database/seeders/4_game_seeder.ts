@@ -24,6 +24,16 @@ export default class GameSeeder extends BaseSeeder {
         awayTeamScore: 1,
         startsLeft: false
       },
+      {
+        teamId: 1,
+        atHome: false,
+        adversaryName: 'Futsal Fragiles',
+        gameDate: new Date('2022-01-11'),
+        videoPath: 'https://example.com/match1.mp4',
+        homeTeamScore: 7,
+        awayTeamScore: 10,
+        startsLeft: false
+      },
     ])
   }
 }

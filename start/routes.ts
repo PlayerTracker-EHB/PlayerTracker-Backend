@@ -6,6 +6,7 @@
 | The routes file is used for defining the HTTP routes.
 |
 */
+const StatsController = () => import('#controllers/stats_controller')
 const TeamController = () => import('#controllers/team_controller')
 const AuthController = () => import('#controllers/auth_controller')
 const PlayerController = () => import('#controllers/player_controller')
@@ -31,6 +32,7 @@ router.group(() => {
   router.post('/logout', [AuthController, 'logout'])
 
   router.get('/games', [GameController, 'index'])
+  router.get('/stats/:matchId', [StatsController, 'index'])
 
 }).use(middleware.auth())
 
