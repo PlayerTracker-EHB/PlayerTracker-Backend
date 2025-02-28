@@ -13,6 +13,16 @@ export class GameService {
     return createdGame.gameId
   }
 
+  async getStatus(gameId: any) {
+    const game = await Game.findByOrFail("gameId", gameId)
+
+    return game.gameStatus
+  }
+
+  async updateStatus(gameId: any, status: any) {
+    Game.updateOrCreate({ gameId }, { gameStatus: status })
+  }
+
 
 }
 

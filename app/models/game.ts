@@ -2,6 +2,7 @@ import { BaseModel, column, belongsTo } from '@adonisjs/lucid/orm'
 import { DateTime } from 'luxon'
 import Team from '#models/team'
 import { type BelongsTo } from '@adonisjs/lucid/types/relations'
+import { GameStatus } from '../enums/game_status.js'
 
 export default class Game extends BaseModel {
   @column({ isPrimary: true })
@@ -27,6 +28,9 @@ export default class Game extends BaseModel {
 
   @column()
   declare awayTeamScore: number
+
+  @column()
+  declare gameStatus: GameStatus
 
   @column()
   declare startsLeft: boolean
