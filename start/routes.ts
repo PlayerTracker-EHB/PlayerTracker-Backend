@@ -33,6 +33,7 @@ router.group(() => {
 
   router.get('/games', [GameController, 'index'])
   router.get('/stats/:matchId', [StatsController, 'index'])
+  router.get('/games/status/:matchId', [GameController, 'getStatus'])
 
 }).use(middleware.auth())
 

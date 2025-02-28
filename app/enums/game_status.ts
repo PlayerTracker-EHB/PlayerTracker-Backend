@@ -1,0 +1,5 @@
+export enum GameStatus {
+  PROCESSING = 'PROCESSING',
+  SUSPENDED = 'SUSPENDED',
+  COMPLETED = 'COMPLETED',
+}

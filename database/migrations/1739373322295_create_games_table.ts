@@ -1,4 +1,5 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
+import { GameStatus } from '../../app/enums/game_status.js'
 
 export default class extends BaseSchema {
   protected tableName = 'games'
@@ -14,7 +15,9 @@ export default class extends BaseSchema {
       table.integer('home_team_score').nullable()
       table.integer('away_team_score').nullable()
       table.boolean('starts_left').nullable()
-
+      table.enum('game_status', Object.values(GameStatus))
+        .defaultTo(GameStatus.PROCESSING)
+        .notNullable()
       table.timestamp('created_at').notNullable()
     })
   }

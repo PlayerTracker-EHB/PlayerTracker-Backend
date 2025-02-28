@@ -17,5 +17,14 @@ export default class GameController {
     return await this.gameService.all(teamId)
   }
 
+  public async getStatus({ request }: HttpContext) {
+    const gameId = request.param('matchId')
+
+    const status = this.gameService.getStatus(gameId)
+
+    return status
+  }
+
+
 
 }
