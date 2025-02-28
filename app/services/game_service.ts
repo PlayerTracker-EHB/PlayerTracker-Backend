@@ -15,7 +15,6 @@ export class GameService {
 
   async getStatus(gameId: any) {
     const game = await Game.findByOrFail("gameId", gameId)
-    console.log(game.gameStatus)
 
     return game.gameStatus
   }
