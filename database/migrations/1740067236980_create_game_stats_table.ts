@@ -5,7 +5,7 @@ export default class extends BaseSchema {
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('stat_id').primary()
+      table.increments('game_stat_id').primary()
       table.integer('game_id').unsigned().references('games.game_id').onDelete('CASCADE')
       table.string('video_name').notNullable()
       table.float('possession_team_a').notNullable()
