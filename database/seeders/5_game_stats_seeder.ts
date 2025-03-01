@@ -5,7 +5,6 @@ export default class GameSeeder extends BaseSeeder {
   async run() {
     await GameStats.createMany([
       {
-        statId: 1,
         gameId: 1,
         videoName: "/uploads/match1.mp4",
         possessionTeamA: 65,
@@ -14,7 +13,6 @@ export default class GameSeeder extends BaseSeeder {
         heatmapTeamB: "/uploads/heatmap2.png",
       },
       {
-        statId: 2,
         gameId: 3,
         videoName: "/uploads/match1.mp4",
         possessionTeamA: 85,

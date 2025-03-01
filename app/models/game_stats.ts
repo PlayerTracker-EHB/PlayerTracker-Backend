@@ -5,7 +5,7 @@ import { DateTime } from 'luxon'
 
 export default class GameStats extends BaseModel {
   @column({ isPrimary: true })
-  declare statId: number
+  declare gameStatId: number
 
   @column()
   declare gameId: number
