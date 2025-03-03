@@ -1,4 +1,5 @@
 import Team from "#models/team";
+import User from "#models/user";
 
 export interface teamRequest {
   teamId: number,
@@ -13,6 +14,12 @@ export class TeamService {
     const updatedTeam = await oldTeam.merge(team).save()
     console.log(updatedTeam)
     return updatedTeam
+  }
+
+  async getUsers(teamId: number) {
+    const users = await User.findManyBy("teamId", teamId)
+    console.log(users)
+    return users
   }
 
 }

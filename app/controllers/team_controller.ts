@@ -35,5 +35,12 @@ export default class TeamController {
       return response.badRequest({ message: "Validation failed", error: error.message });
     }
   }
+
+  public async getUsers({ request, response }: HttpContext) {
+    const teamId = request.param('teamId')
+    const users = await this.teamService.getUsers(teamId)
+
+    return response.ok({ users, message: "Users retrieved successfully" })
+  }
 }
 
