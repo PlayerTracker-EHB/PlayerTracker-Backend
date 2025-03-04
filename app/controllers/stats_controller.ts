@@ -17,9 +17,10 @@ export default class StatsController {
 
   public async index({ request, response }: HttpContext) {
     const gameId = request.param('gameId');
+    console.log("getting stats ", gameId)
 
     // Create an object that matches the schema
-    const payload = { mathiId: gameId };
+    const payload = { gameId: gameId };
 
     // First try-catch for validation
     try {
