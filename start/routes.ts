@@ -35,6 +35,8 @@ router.group(() => {
   router.get('/stats/:matchId', [StatsController, 'index'])
   router.get('/games/status/:matchId', [GameController, 'getStatus'])
 
+  router.get("/download/processed_video/:matchId", [GameController, 'downloadProcessedVideo'])
+
 }).use(middleware.auth())
 
 // Admin routes

@@ -1,4 +1,5 @@
 import Game from "#models/game"
+import GameStats from "#models/game_stats"
 import { inject } from "@adonisjs/core"
 
 @inject()
@@ -21,6 +22,11 @@ export class GameService {
 
   async updateStatus(gameId: any, status: any) {
     Game.updateOrCreate({ gameId }, { gameStatus: status })
+  }
+
+  async getStats(gameId: any) {
+    const stats = GameStats.findByOrFail("gameId", gameId)
+    return stats
   }
 
 
