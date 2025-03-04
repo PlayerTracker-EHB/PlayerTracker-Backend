@@ -19,7 +19,9 @@ export default class GameController {
   }
 
   public async getStatus({ request }: HttpContext) {
-    const gameId = request.param('matchId')
+    const gameIdString = request.param('gameId')
+
+    const gameId = parseInt(gameIdString, 10)
 
     const status = this.gameService.getStatus(gameId)
 
