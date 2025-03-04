@@ -33,6 +33,8 @@ router.group(() => {
 
   router.get('/games', [GameController, 'index'])
   router.get('/stats/:matchId', [StatsController, 'index'])
+  router.get('/teams/:teamId/possession-trend', [StatsController, 'getPossessionTrend'])
+
 
 }).use(middleware.auth())
 

@@ -1,3 +1,4 @@
+import Game from "#models/game";
 import { StatsService } from "#services/stats_service";
 import { inject } from "@adonisjs/core";
 import { HttpContext } from "@adonisjs/core/http";
@@ -43,6 +44,38 @@ export default class StatsController {
         errors: error.messages,
       });
 
+    }
+  }
+
+
+
+  public async getPossessionTrend({ params, response }: HttpContext) {
+    try {
+      const { teamId } = params
+
+      const games = await Game.query()
+        .where('team_id', teamId)
+
+      const possessionData = games.map(async (game) => {
+        const gameId = game.gameId
+        const stats = await this.statsService.getStats(gameId)
+        if (!stats) return null
+
+        return {
+          id: game.gameId,
+          date: game.gameDate,
+          ourScore: game.homeTeamScore,
+          opponentScore: game.awayTeamScore,
+          opponent: game.adversaryName,
+          isHome: game.atHome,
+          possession: game.startsLeft ? stats.possessionTeamA : stats.possessionTeamB,
+        }
+      }).filter(Boolean) // Remove null values
+
+      return response.json(possessionData)
+    } catch (error) {
+      console.error(error)
+      return response.status(500).json({ error: 'Error fetching possession data' })
     }
   }
 }
