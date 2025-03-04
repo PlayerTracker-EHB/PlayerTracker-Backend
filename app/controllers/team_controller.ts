@@ -1,3 +1,4 @@
+import User from "#models/user";
 import { TeamService } from "#services/team_service";
 import { inject } from "@adonisjs/core";
 import { HttpContext } from "@adonisjs/core/http";
@@ -8,6 +9,15 @@ const teamSchema = vine.compile(
     teamId: vine.number(),
     coachName: vine.string(),
     clubName: vine.string(),
+  })
+)
+
+const userSchema = vine.compile(
+  vine.object({
+    fullName: vine.string(),
+    email: vine.string(),
+    password: vine.string(),
+    teamId: vine.number(),
   })
 )
 
@@ -36,11 +46,37 @@ export default class TeamController {
     }
   }
 
-  public async getUsers({ request, response }: HttpContext) {
+  public async getUsers({ request }: HttpContext) {
     const teamId = request.param('teamId')
     const users = await this.teamService.getUsers(teamId)
 
-    return response.ok({ users, message: "Users retrieved successfully" })
+    return users
+  }
+
+  public async createUser({ request, response }: HttpContext) {
+    console.log("TEST");
+
+    const data = request.only(["fullName", "email", "password", "teamId"]);
+    console.log("DATA", data);
+
+    try {
+      const validatedData = await userSchema.validate(data);
+      const user = await User.create(validatedData);
+      return response.ok({ user, message: "User created successfully" });
+    } catch (error) {
+      console.error("Validation error:", error);
+      return response.badRequest({ message: "Validation failed", error: error.message });
+    }
+  }
+
+
+  public async deleteUser({ request, response }: HttpContext) {
+    const userId = request.param('userId')
+
+    const user = await User.findOrFail(userId)
+    await user.delete()
+
+    return response.ok({ message: "User deleted successfully" })
   }
 }
 

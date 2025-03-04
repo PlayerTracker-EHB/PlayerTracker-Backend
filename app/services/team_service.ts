@@ -18,8 +18,11 @@ export class TeamService {
 
   async getUsers(teamId: number) {
     const users = await User.findManyBy("teamId", teamId)
-    console.log(users)
     return users
+  }
+
+  async createUser(user: User) {
+    await User.create(user)
   }
 
 }

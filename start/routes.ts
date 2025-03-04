@@ -49,6 +49,8 @@ router.group(() => {
 
   router.put("/team", [TeamController, 'update'])
   router.get("/team/:teamId", [TeamController, 'getUsers'])
+  router.post("/team/user", [TeamController, 'createUser'])
+  router.delete("/team/user/:userId", [TeamController, 'deleteUser'])
 
   router.post("/upload-chunk", [UploadsController, 'uploadChunk'])
   router.post("/finalize-upload", [UploadsController, 'finalizeUpload'])
