@@ -7,7 +7,7 @@ import vine from "@vinejs/vine";
 
 const statsSchema = vine.compile(
   vine.object({
-    matchId: vine.number()
+    gameId: vine.number()
   })
 )
 
@@ -27,9 +27,7 @@ export default class GameController {
   }
 
   public async getStatus({ request }: HttpContext) {
-    const gameIdString = request.param('gameId')
-
-    const gameId = parseInt(gameIdString, 10)
+    const gameId = request.param('gameId')
 
     const status = this.gameService.getStatus(gameId)
 
@@ -37,10 +35,10 @@ export default class GameController {
   }
 
   public async downloadProcessedVideo({ request, response }: HttpContext) {
-    const matchId = request.param('matchId');
+    const gameId = request.param('gameId');
 
     // Create an object that matches the schema
-    const payload = { matchId: matchId };
+    const payload = { gameId: gameId };
 
     // First try-catch for validation
     try {
@@ -48,7 +46,7 @@ export default class GameController {
 
       // Second try-catch for fetching stats
       try {
-        const gameStats = await this.statsService.getStats(validatedPayload.matchId);
+        const gameStats = await this.statsService.getStats(validatedPayload.gameId);
         const bucket = 'processed-videos'
         const sourceObject = gameStats.videoName
         const filePath = app.makePath("storage", bucket, sourceObject)

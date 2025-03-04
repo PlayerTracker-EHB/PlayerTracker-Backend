@@ -32,10 +32,10 @@ router.group(() => {
   router.post('/logout', [AuthController, 'logout'])
 
   router.get('/games', [GameController, 'index'])
-  router.get('/stats/:matchId', [StatsController, 'index'])
-  router.get('/games/status/:matchId', [GameController, 'getStatus'])
+  router.get('/stats/:gameId', [StatsController, 'index'])
+  router.get('/games/status/:gameId', [GameController, 'getStatus'])
 
-  router.get("/download/processed_video/:matchId", [GameController, 'downloadProcessedVideo'])
+  router.get("/download/processed_video/:gameId", [GameController, 'downloadProcessedVideo'])
 
 }).use(middleware.auth())
 

@@ -20,7 +20,7 @@ export class MinioService {
   }
 
   // Upload video to MinIO
-  public async uploadFile(destinationObject: string, matchId: number): Promise<void> {
+  public async uploadFile(destinationObject: string, gameId: number): Promise<void> {
     const bucket = minio.bucketName
     const filePath = app.makePath("storage/videos", destinationObject)
 
@@ -39,7 +39,7 @@ export class MinioService {
 
     // Upload the file to the bucket
     await this.client.fPutObject(bucket, destinationObject, filePath, metaData)
-    this.sendFileData(destinationObject, matchId)
+    this.sendFileData(destinationObject, gameId)
     console.log(`File ${filePath} uploaded as object ${destinationObject} in bucket ${bucket}`)
   }
 

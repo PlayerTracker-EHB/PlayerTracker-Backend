@@ -5,7 +5,7 @@ import vine from "@vinejs/vine";
 
 const statsSchema = vine.compile(
   vine.object({
-    mathiId: vine.number()
+    gameId: vine.number()
   })
 )
 
@@ -16,10 +16,10 @@ export default class StatsController {
   ) { }
 
   public async index({ request, response }: HttpContext) {
-    const matchId = request.param('matchId');
+    const gameId = request.param('gameId');
 
     // Create an object that matches the schema
-    const payload = { mathiId: matchId };
+    const payload = { mathiId: gameId };
 
     // First try-catch for validation
     try {
@@ -27,7 +27,7 @@ export default class StatsController {
 
       // Second try-catch for fetching stats
       try {
-        const matchStats = await this.statsService.getStats(validatedPayload.mathiId);
+        const matchStats = await this.statsService.getStats(validatedPayload.gameId);
         return response.ok({ matchStats });
       } catch (error) {
         // Handle service errors
